@@ -1,9 +1,10 @@
 export default class Output {
   constructor() {
-    this.textArea = document.createElement('textarea');
+    this.textArea = null;
   }
 
   render(block) {
+    this.textArea = document.createElement('textarea');
     this.textArea.className = 'board';
     block.append(this.textArea);
 

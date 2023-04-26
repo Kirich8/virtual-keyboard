@@ -1,13 +1,16 @@
 import Output from '../output/output.js';
+import Keyboard from '../keyboard/keyboard.js';
 
 export default class App {
   constructor(block) {
     this.block = block;
     this.output = new Output();
+    this.keyboard = new Keyboard();
   }
 
   init() {
     this.output.render(this.block);
+    this.keyboard.render(this.block);
     this.renderDescription();
   }
 
