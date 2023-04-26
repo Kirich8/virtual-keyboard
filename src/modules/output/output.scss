@@ -1,6 +1,8 @@
 @import '../../style/vars';
+@import '../../style/fonts';
 
 .board{
+  font-family: 'Balsamiq';
   min-width: 1000px;
   height: 250px;
   padding: 25px;

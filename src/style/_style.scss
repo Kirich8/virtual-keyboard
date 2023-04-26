@@ -1,6 +1,8 @@
 @import 'vars';
+@import 'fonts';
 
 body {
+  font-family: 'Balsamiq';
   height: 100vh;
   display: flex;
   flex-direction: column;
