@@ -12,7 +12,7 @@ body {
   overflow: scroll;
   color: $--clr-neon-light;
   text-shadow: 0 0 15px hsla(0, 0%, 100%, 0.3), 0 0 20px $--clr-neon-text;
-  background-color: $--clr-neon-dark;
+  background: url('img/background.jpg');
 }
 
 p {
