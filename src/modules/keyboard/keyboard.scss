@@ -1,6 +1,6 @@
 .keyboard {
+  box-sizing: border-box;
   width: 1000px;
-  height: 300px;
   background-color: $--clr-neon-main;
   padding: 25px;
   display: flex;
@@ -11,5 +11,5 @@
   border: 3px solid $--clr-neon-dark;
   box-shadow: 0 0 25px 1px $--clr-neon-dark;
   border-radius: 10px;
-  transform: scale(.8);
+  transform: scale(.9);
 }

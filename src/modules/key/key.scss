@@ -1,0 +1,112 @@
+.neon-button {
+  font-family: "Balsamiq Sans";
+  font-size: 18px;
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+  cursor: pointer;
+  text-decoration: none;
+  background-color: inherit;
+  text-align: center;
+  border-radius: 5px;
+  position: relative;
+  color: $--clr-neon-text;
+  border: $--clr-neon-dark 0.025em solid;
+  text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.45em $--clr-neon-dark;
+  box-shadow: inset 0 0 0.5em 0 $--clr-neon-dark, 0 0 0.5em 0 $--clr-neon-dark;
+  outline: none;
+}
+.green{
+  color: $--clr-neon-text;
+  border: $--clr-neon-light 0.025em solid;
+  text-shadow: 0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.45em $--clr-neon-light;
+  box-shadow: inset 0 0 0.5em 0 $--clr-neon-light, 0 0 0.5em 0 $--clr-neon-light;
+}
+
+.neon-button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  box-shadow: 0 0 15px 1px $--clr-neon-dark;
+  opacity: 0;
+  background-color: $--clr-neon-dark;
+  z-index: -1;
+  transition: opacity 100ms linear;
+  border-radius: 5px;
+}
+.green::after {
+  box-shadow: 0 0 15px 1px $--clr-neon-light;
+  background-color: $--clr-neon-light;
+}
+
+.neon-button:hover {
+  color: $--clr-neon-text;
+  text-shadow: none;
+  box-shadow: 0 0 25px 1px $--clr-neon-dark;
+}
+.green:hover {
+  color: $--clr-neon-text;
+  box-shadow: 0 0 25px 1px $--clr-neon-light;
+}
+
+.neon-button:hover::before {
+  opacity: 1;
+}
+
+.neon-button:hover::after {
+  opacity: 1;
+}
+
+.neon-button:active {
+  background-color: $--clr-neon-dark;
+  color: black;
+}
+.green:active {
+  background-color: $--clr-neon-light;
+  color: black;
+}
+.click-button {
+  box-shadow: 0 0 25px 5px $--clr-neon-dark;
+  opacity: 1;
+  background-color: $--clr-neon-dark;
+  z-index: -1;
+  border-radius: 5px;
+  transform: scale(.9);
+  color: black;
+}
+.click-button-green {
+  box-shadow: 0 0 25px 5px $--clr-neon-light;
+  opacity: 1;
+  background-color: $--clr-neon-light;
+  z-index: -1;
+  border-radius: 5px;
+  transform: scale(.9);
+  color: black;
+}
+.click-button-space {
+  box-shadow: 0 0 25px 5px $--clr-neon-light;
+  opacity: 1;
+  background-color: $--clr-neon-light;
+  z-index: -1;
+  border-radius: 5px;
+  transform: scale(.98);
+  color: black;
+}
+.space:active {
+  transform: scale(.98);
+}
+.middle {
+  width: 62px;
+}
+.big {
+  width: 135px;
+}
+.medium {
+  width: 122.5px;
+}
+.space {
+  width: 411px
+}

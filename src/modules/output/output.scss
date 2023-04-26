@@ -1,9 +1,10 @@
 .board{
+  box-sizing: border-box;
   font-family: 'Balsamiq';
   min-width: 1000px;
   height: 250px;
   padding: 25px;
-  transform: scale(.8);
+  transform: scale(.9);
   border: 3px solid $--clr-neon-light;
   background-color: $--clr-neon-main;
   color: $--clr-neon-text;
