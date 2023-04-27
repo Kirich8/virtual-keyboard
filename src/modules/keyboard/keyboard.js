@@ -1,12 +1,13 @@
 import Key from '../key/key.js';
-import keysArray from '../keysInfo.js';
+import { keysArray, functionalKey } from '../keysInfo.js';
 
 export default class Keyboard {
   constructor() {
     this.keyboard = null;
     this.output = null;
     this.document = document;
-    this.language = 'ru';
+    this.language = 'en';
+    this.capsLock = false;
   }
 
   render(block) {
@@ -23,16 +24,35 @@ export default class Keyboard {
     keysArray.forEach((keyInfo) => {
       const key = new Key();
       const {
-        char, code, className, charRu,
+        char, code, className, charRu, caps, capsRu,
       } = keyInfo;
       const isThere = document.querySelector(`[data-code="${code}"]`);
 
       if (!isThere) {
-        if (this.language === 'en') key.render(this.keyboard, char, className, code);
-        if (this.language === 'ru') key.render(this.keyboard, charRu, className, code);
+        if (functionalKey.includes(char)) {
+          key.render(this.keyboard, char, className, code);
+        } else {
+          if (this.language === 'en') key.render(this.keyboard, char, className, code);
+          if (this.language === 'ru') key.render(this.keyboard, charRu, className, code);
+        }
+      } else if (functionalKey.includes(char)) {
+        isThere.innerHTML = char;
       } else {
         if (this.language === 'en') isThere.innerHTML = char;
         if (this.language === 'ru') isThere.innerHTML = charRu;
+
+        if (this.capsLock) {
+          if (this.language === 'en') {
+            if (caps) {
+              isThere.innerHTML = caps;
+            }
+          }
+          if (this.language === 'ru') {
+            if (capsRu) {
+              isThere.innerHTML = capsRu;
+            }
+          }
+        }
       }
     });
   }
@@ -77,7 +97,7 @@ export default class Keyboard {
     const end = this.output.selectionEnd;
     const text = this.output.value;
 
-    if (end === this.output.value.length || this.output.value === 0) {
+    if (!this.output.value) {
       return;
     }
 
@@ -114,6 +134,18 @@ export default class Keyboard {
         case ('Delete'):
           this.addClass(codeButton);
           this.output.focus();
+          break;
+
+        case ('CapsLock'):
+          if (this.capsLock) {
+            this.capsLock = false;
+            this.renderKeys();
+            this.removeClass(codeButton, 'click-button-green');
+          } else {
+            this.capsLock = true;
+            this.renderKeys();
+            this.addClass(codeButton);
+          }
           break;
 
         case ('Enter'):
@@ -173,14 +205,9 @@ export default class Keyboard {
           break;
 
         default:
-          keysArray.forEach((keyInfo) => {
-            if (codeButton === keyInfo.code) {
-              this.addClass(codeButton, 'click-button');
-              event.preventDefault();
-
-              this.insertText(char);
-            }
-          });
+          this.addClass(codeButton, 'click-button');
+          event.preventDefault();
+          this.insertText(char);
       }
 
       if (event.ctrlKey && event.altKey) {
@@ -194,13 +221,9 @@ export default class Keyboard {
       const classArray = ['click-button', 'click-button-green', 'click-button-space'];
       const codeButton = event.code;
 
-      keysArray.forEach((keyInfo) => {
-        if (keyInfo.code === codeButton) {
-          setTimeout(() => {
-            this.removeClass(codeButton, ...classArray);
-          }, 50);
-        }
-      });
+      setTimeout(() => {
+        this.removeClass(codeButton, ...classArray);
+      }, 50);
     });
 
     document.addEventListener('click', (event) => {
@@ -219,6 +242,18 @@ export default class Keyboard {
 
           case ('Delete'):
             this.clickDelete();
+            break;
+
+          case ('CapsLock'):
+            if (this.capsLock) {
+              this.capsLock = false;
+              this.renderKeys();
+              this.removeClass(codeButton, 'click-button-green');
+            } else {
+              this.capsLock = true;
+              this.renderKeys();
+              this.addClass(codeButton);
+            }
             break;
 
           case ('Enter'):
