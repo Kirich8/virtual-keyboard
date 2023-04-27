@@ -6,6 +6,7 @@ export default class Keyboard {
     this.keyboard = null;
     this.output = null;
     this.document = document;
+    this.language = 'ru';
   }
 
   render(block) {
@@ -21,9 +22,18 @@ export default class Keyboard {
   renderKeys() {
     keysArray.forEach((keyInfo) => {
       const key = new Key();
-      const { char, code, className } = keyInfo;
+      const {
+        char, code, className, charRu,
+      } = keyInfo;
+      const isThere = document.querySelector(`[data-code="${code}"]`);
 
-      key.render(this.keyboard, char, className, code);
+      if (!isThere) {
+        if (this.language === 'en') key.render(this.keyboard, char, className, code);
+        if (this.language === 'ru') key.render(this.keyboard, charRu, className, code);
+      } else {
+        if (this.language === 'en') isThere.innerHTML = char;
+        if (this.language === 'ru') isThere.innerHTML = charRu;
+      }
     });
   }
 
@@ -143,6 +153,12 @@ export default class Keyboard {
               this.insertText(keyInfo.char);
             }
           });
+      }
+
+      if (event.ctrlKey && event.altKey) {
+        this.language = this.language === 'en' ? 'ru' : 'en';
+
+        this.renderKeys();
       }
     });
 
