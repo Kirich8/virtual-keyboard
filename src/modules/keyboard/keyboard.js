@@ -40,6 +40,28 @@ export default class Keyboard {
     this.document.querySelector(`[data-code="${code}"]`).classList.remove(...className);
   }
 
+  clickBackspace() {
+    const start = this.output.selectionStart;
+    const end = this.output.selectionEnd;
+    const text = this.output.value;
+
+    if (end === 0 || this.output.value === 0) {
+      return;
+    }
+
+    this.output.value = '';
+
+    if (start === end) {
+      this.insertText(text.slice(0, start - 1) + text.slice(end));
+      this.output.selectionStart = start - 1;
+      this.output.selectionEnd = this.output.selectionStart;
+    } else {
+      this.insertText(text.slice(0, start) + text.slice(end));
+      this.output.selectionStart = start;
+      this.output.selectionEnd = this.output.selectionStart;
+    }
+  }
+
   listenEvents() {
     document.addEventListener('keydown', (event) => {
       const codeButton = event.code;
@@ -94,6 +116,10 @@ export default class Keyboard {
         switch (codeButton) {
           case ('Tab'):
             this.insertText('\t');
+            break;
+
+          case ('Backspace'):
+            this.clickBackspace();
             break;
 
           case ('Enter'):
