@@ -84,6 +84,56 @@ export default class Keyboard {
           this.insertText('\n');
           break;
 
+        case ('ControlLeft'):
+          this.addClass(codeButton);
+          break;
+
+        case ('ControlRight'):
+          this.addClass(codeButton);
+          break;
+
+        case ('AltLeft'):
+          this.addClass(codeButton);
+          break;
+
+        case ('AltRight'):
+          this.addClass(codeButton);
+          break;
+
+        case ('MetaLeft'):
+          this.addClass(codeButton);
+          break;
+
+        case ('Space'):
+          this.addClass(codeButton, 'click-button-space');
+          event.preventDefault();
+          this.insertText(' ');
+          break;
+
+        case ('ArrowLeft'):
+          this.addClass(codeButton, 'click-button-space');
+          event.preventDefault();
+          this.insertText('◀︎');
+          break;
+
+        case ('ArrowRight'):
+          this.addClass(codeButton, 'click-button-space');
+          event.preventDefault();
+          this.insertText('►');
+          break;
+
+        case ('ArrowUp'):
+          this.addClass(codeButton, 'click-button-space');
+          event.preventDefault();
+          this.insertText('▲');
+          break;
+
+        case ('ArrowDown'):
+          this.addClass(codeButton, 'click-button-space');
+          event.preventDefault();
+          this.insertText('▼');
+          break;
+
         default:
           keysArray.forEach((keyInfo) => {
             if (codeButton === keyInfo.code) {
@@ -124,6 +174,41 @@ export default class Keyboard {
 
           case ('Enter'):
             this.insertText('\n');
+            break;
+
+          case ('ControlLeft'):
+            break;
+
+          case ('ControlRight'):
+            break;
+
+          case ('AltLeft'):
+            break;
+
+          case ('AltRight'):
+            break;
+
+          case ('MetaLeft'):
+            break;
+
+          case ('Space'):
+            this.insertText(' ');
+            break;
+
+          case ('ArrowLeft'):
+            this.insertText('◀︎');
+            break;
+
+          case ('ArrowRight'):
+            this.insertText('►');
+            break;
+
+          case ('ArrowUp'):
+            this.insertText('▲');
+            break;
+
+          case ('ArrowDown'):
+            this.insertText('▼');
             break;
 
           default:
