@@ -72,9 +72,32 @@ export default class Keyboard {
     }
   }
 
+  clickDelete() {
+    const start = this.output.selectionStart;
+    const end = this.output.selectionEnd;
+    const text = this.output.value;
+
+    if (end === this.output.value.length || this.output.value === 0) {
+      return;
+    }
+
+    this.output.value = '';
+
+    if (start === end) {
+      this.insertText(text.slice(0, start) + text.slice(end + 1));
+      this.output.selectionStart = start;
+      this.output.selectionEnd = this.output.selectionStart;
+    } else {
+      this.insertText(text.slice(0, start) + text.slice(end));
+      this.output.selectionStart = start;
+      this.output.selectionEnd = this.output.selectionStart;
+    }
+  }
+
   listenEvents() {
     document.addEventListener('keydown', (event) => {
       const codeButton = event.code;
+      const char = document.querySelector(`[data-code="${codeButton}"]`).innerText;
 
       switch (codeButton) {
         case ('Tab'):
@@ -84,6 +107,11 @@ export default class Keyboard {
           break;
 
         case ('Backspace'):
+          this.addClass(codeButton);
+          this.output.focus();
+          break;
+
+        case ('Delete'):
           this.addClass(codeButton);
           this.output.focus();
           break;
@@ -150,7 +178,7 @@ export default class Keyboard {
               this.addClass(codeButton, 'click-button');
               event.preventDefault();
 
-              this.insertText(keyInfo.char);
+              this.insertText(char);
             }
           });
       }
@@ -178,6 +206,7 @@ export default class Keyboard {
     document.addEventListener('click', (event) => {
       if (event.target.classList.contains('neon-button')) {
         const codeButton = event.target.dataset.code;
+        const char = document.querySelector(`[data-code="${codeButton}"]`).innerText;
 
         switch (codeButton) {
           case ('Tab'):
@@ -186,6 +215,10 @@ export default class Keyboard {
 
           case ('Backspace'):
             this.clickBackspace();
+            break;
+
+          case ('Delete'):
+            this.clickDelete();
             break;
 
           case ('Enter'):
@@ -228,11 +261,7 @@ export default class Keyboard {
             break;
 
           default:
-            keysArray.forEach((keyInfo) => {
-              if (codeButton === keyInfo.code) {
-                this.insertText(keyInfo.char);
-              }
-            });
+            this.insertText(char);
         }
       }
     });

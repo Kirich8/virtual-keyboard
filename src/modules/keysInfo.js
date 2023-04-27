@@ -84,7 +84,7 @@ const keysArray = [
     char: '\\', code: 'Backslash', className: ['neon-button'], charUp: '|', charRu: '\\', charRuUp: '/',
   },
   {
-    char: 'Del', code: 'Del', className: ['neon-button', 'middle', 'green'], charUp: 'Del', charRu: 'Del', charRuUp: 'Del',
+    char: 'Del', code: 'Delete', className: ['neon-button', 'middle', 'green'], charUp: 'Del', charRu: 'Del', charRuUp: 'Del',
   },
   {
     char: 'Caps Lock', code: 'CapsLock', className: ['neon-button', 'medium', 'green'], charUp: 'Caps Lock', charRu: 'Caps Lock', charRuUp: 'Caps Lock',
