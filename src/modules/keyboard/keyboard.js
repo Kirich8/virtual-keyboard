@@ -44,14 +44,34 @@ export default class Keyboard {
     document.addEventListener('keydown', (event) => {
       const codeButton = event.code;
 
-      keysArray.forEach((keyInfo) => {
-        if (codeButton === keyInfo.code) {
-          this.addClass(codeButton, 'click-button');
+      switch (codeButton) {
+        case ('Tab'):
+          this.addClass(codeButton);
           event.preventDefault();
+          this.insertText('\t');
+          break;
 
-          this.insertText(keyInfo.char);
-        }
-      });
+        case ('Backspace'):
+          this.addClass(codeButton);
+          this.output.focus();
+          break;
+
+        case ('Enter'):
+          this.addClass(codeButton);
+          event.preventDefault();
+          this.insertText('\n');
+          break;
+
+        default:
+          keysArray.forEach((keyInfo) => {
+            if (codeButton === keyInfo.code) {
+              this.addClass(codeButton, 'click-button');
+              event.preventDefault();
+
+              this.insertText(keyInfo.char);
+            }
+          });
+      }
     });
 
     document.addEventListener('keyup', (event) => {
@@ -65,6 +85,29 @@ export default class Keyboard {
           }, 50);
         }
       });
+    });
+
+    document.addEventListener('click', (event) => {
+      if (event.target.classList.contains('neon-button')) {
+        const codeButton = event.target.dataset.code;
+
+        switch (codeButton) {
+          case ('Tab'):
+            this.insertText('\t');
+            break;
+
+          case ('Enter'):
+            this.insertText('\n');
+            break;
+
+          default:
+            keysArray.forEach((keyInfo) => {
+              if (codeButton === keyInfo.code) {
+                this.insertText(keyInfo.char);
+              }
+            });
+        }
+      }
     });
   }
 }
