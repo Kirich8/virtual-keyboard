@@ -8,6 +8,8 @@ export default class Keyboard {
     this.document = document;
     this.language = 'en';
     this.capsLock = false;
+    this.shift = false;
+    this.shiftDown = false;
   }
 
   render(block) {
@@ -24,7 +26,7 @@ export default class Keyboard {
     keysArray.forEach((keyInfo) => {
       const key = new Key();
       const {
-        char, code, className, charRu, caps, capsRu,
+        char, code, className, charRu, caps, capsRu, charUp, charRuUp,
       } = keyInfo;
       const isThere = document.querySelector(`[data-code="${code}"]`);
 
@@ -38,9 +40,14 @@ export default class Keyboard {
       } else if (functionalKey.includes(char)) {
         isThere.innerHTML = char;
       } else {
-        if (this.language === 'en') isThere.innerHTML = char;
-        if (this.language === 'ru') isThere.innerHTML = charRu;
-
+        if (this.shift) {
+          if (this.language === 'en') isThere.innerHTML = charUp;
+          if (this.language === 'ru') isThere.innerHTML = charRuUp;
+        } else {
+          if (this.language === 'en') isThere.innerHTML = char;
+          if (this.language === 'ru') isThere.innerHTML = charRu;
+        }
+        
         if (this.capsLock) {
           if (this.language === 'en') {
             if (caps) {
@@ -51,6 +58,20 @@ export default class Keyboard {
             if (capsRu) {
               isThere.innerHTML = capsRu;
             }
+          }
+        }
+
+        if (this.capsLock && this.shift) {
+          if (this.language === 'en') {
+            if (caps) {
+              isThere.innerHTML = char;
+            } else {
+              isThere.innerHTML = charUp;
+            }
+          } else if (caps) {
+            isThere.innerHTML = charRu;
+          } else {
+            isThere.innerHTML = charRuUp;
           }
         }
       }
@@ -154,6 +175,22 @@ export default class Keyboard {
           this.insertText('\n');
           break;
 
+        case ('ShiftLeft'):
+          if (this.shift) this.removeClass('ShiftRight', 'click-button-green');
+          this.shiftDown = true;
+          this.shift = true;
+          this.renderKeys();
+          this.addClass(codeButton);
+          break;
+
+        case ('ShiftRight'):
+          if (this.shift) this.removeClass('ShiftLeft', 'click-button-green');
+          this.shiftDown = true;
+          this.shift = true;
+          this.renderKeys();
+          this.addClass(codeButton);
+          break;
+
         case ('ControlLeft'):
           this.addClass(codeButton);
           break;
@@ -221,9 +258,26 @@ export default class Keyboard {
       const classArray = ['click-button', 'click-button-green', 'click-button-space'];
       const codeButton = event.code;
 
-      setTimeout(() => {
-        this.removeClass(codeButton, ...classArray);
-      }, 50);
+      switch (codeButton) {
+        case ('ShiftLeft'):
+          this.shiftDown = false;
+          this.shift = false;
+          this.renderKeys();
+          this.removeClass(codeButton, ...classArray);
+          break;
+
+        case ('ShiftRight'):
+          this.shiftDown = false;
+          this.shift = false;
+          this.renderKeys();
+          this.removeClass(codeButton, ...classArray);
+          break;
+
+        default:
+          setTimeout(() => {
+            this.removeClass(codeButton, ...classArray);
+          }, 50);
+      }
     });
 
     document.addEventListener('click', (event) => {
@@ -258,6 +312,34 @@ export default class Keyboard {
 
           case ('Enter'):
             this.insertText('\n');
+            break;
+
+          case ('ShiftLeft'):
+            if (this.shift === false) {
+              this.shift = true;
+              this.renderKeys();
+              this.addClass(codeButton);
+              this.addClass('ShiftRight');
+            } else {
+              this.shift = false;
+              this.renderKeys();
+              this.removeClass(codeButton, 'click-button-green');
+              this.removeClass('ShiftRight', 'click-button-green');
+            }
+            break;
+
+          case ('ShiftRight'):
+            if (this.shift === false) {
+              this.shift = true;
+              this.renderKeys();
+              this.addClass(codeButton);
+              this.addClass('ShiftLeft');
+            } else {
+              this.shift = false;
+              this.renderKeys();
+              this.removeClass(codeButton, 'click-button-green');
+              this.removeClass('ShiftLeft', 'click-button-green');
+            }
             break;
 
           case ('ControlLeft'):
@@ -297,6 +379,13 @@ export default class Keyboard {
 
           default:
             this.insertText(char);
+
+            if (this.shift && !this.shiftDown) {
+              this.shift = false;
+              this.renderKeys();
+              this.removeClass('ShiftLeft', 'click-button-green');
+              this.removeClass('ShiftRight', 'click-button-green');
+            }
         }
       }
     });
