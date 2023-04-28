@@ -12,12 +12,23 @@ export default class Keyboard {
     this.shiftDown = false;
   }
 
+  setLocalStorage() {
+    localStorage.setItem('lang', this.language);
+  }
+
+  getLocalStorage() {
+    if (localStorage.getItem('lang')) {
+      this.language = localStorage.getItem('lang');
+    }
+  }
+
   render(block) {
     this.output = document.querySelector('.board');
     this.keyboard = document.createElement('div');
     this.keyboard.className = 'keyboard';
     block.append(this.keyboard);
 
+    this.getLocalStorage();
     this.renderKeys();
     this.listenEvents();
   }
@@ -140,6 +151,7 @@ export default class Keyboard {
   listenEvents() {
     document.addEventListener('keydown', (event) => {
       const codeButton = event.code;
+      const key = document.querySelector(`[data-code="${codeButton}"]`);
 
       switch (codeButton) {
         case ('Tab'):
@@ -243,8 +255,6 @@ export default class Keyboard {
           break;
 
         default:
-          const key = document.querySelector(`[data-code="${codeButton}"]`);
-
           if (key) {
             const char = key.innerText;
 
@@ -257,6 +267,7 @@ export default class Keyboard {
       if (event.ctrlKey && event.altKey) {
         this.language = this.language === 'en' ? 'ru' : 'en';
 
+        this.setLocalStorage();
         this.renderKeys();
       }
     });
