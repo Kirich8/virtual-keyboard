@@ -47,7 +47,7 @@ export default class Keyboard {
           if (this.language === 'en') isThere.innerHTML = char;
           if (this.language === 'ru') isThere.innerHTML = charRu;
         }
-        
+
         if (this.capsLock) {
           if (this.language === 'en') {
             if (caps) {
@@ -88,7 +88,9 @@ export default class Keyboard {
   }
 
   removeClass(code, ...className) {
-    this.document.querySelector(`[data-code="${code}"]`).classList.remove(...className);
+    const key = this.document.querySelector(`[data-code="${code}"]`);
+
+    if (key) key.classList.remove(...className);
   }
 
   clickBackspace() {
@@ -138,7 +140,6 @@ export default class Keyboard {
   listenEvents() {
     document.addEventListener('keydown', (event) => {
       const codeButton = event.code;
-      const char = document.querySelector(`[data-code="${codeButton}"]`).innerText;
 
       switch (codeButton) {
         case ('Tab'):
@@ -242,9 +243,15 @@ export default class Keyboard {
           break;
 
         default:
-          this.addClass(codeButton, 'click-button');
-          event.preventDefault();
-          this.insertText(char);
+          const key = document.querySelector(`[data-code="${codeButton}"]`);
+
+          if (key) {
+            const char = key.innerText;
+
+            this.addClass(codeButton, 'click-button');
+            event.preventDefault();
+            this.insertText(char);
+          }
       }
 
       if (event.ctrlKey && event.altKey) {
