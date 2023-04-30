@@ -12,6 +12,7 @@ export default class Keyboard {
     this.shiftDown = false;
     this.shiftLeftDown = false;
     this.shiftRightDown = false;
+    this.metaDown = false;
   }
 
   setLocalStorage() {
@@ -53,7 +54,7 @@ export default class Keyboard {
       } else if (functionalKey.includes(char)) {
         isThere.innerHTML = char;
       } else {
-        if (this.shift) {
+        if (this.shift || this.shiftLeftDown || this.shiftRightDown) {
           if (this.language === 'en') isThere.innerHTML = charUp;
           if (this.language === 'ru') isThere.innerHTML = charRuUp;
         } else {
@@ -74,7 +75,7 @@ export default class Keyboard {
           }
         }
 
-        if (this.capsLock && this.shift) {
+        if (this.capsLock && (this.shift || this.shiftLeftDown || this.shiftRightDown)) {
           if (this.language === 'en') {
             if (caps) {
               isThere.innerHTML = char;
@@ -86,16 +87,6 @@ export default class Keyboard {
           } else {
             isThere.innerHTML = charRuUp;
           }
-        }
-
-        if (this.shiftLeftDown) {
-          if (this.language === 'en') isThere.innerHTML = charUp;
-          if (this.language === 'ru') isThere.innerHTML = charRuUp;
-        }
-
-        if (this.shiftRightDown) {
-          if (this.language === 'en') isThere.innerHTML = charUp;
-          if (this.language === 'ru') isThere.innerHTML = charRuUp;
         }
       }
     });
@@ -204,11 +195,13 @@ export default class Keyboard {
 
         case ('ShiftLeft'):
           this.shiftLeftDown = true;
+          this.shift = true;
           this.removeClass('ShiftRight', ['click-button-green']);
           break;
 
         case ('ShiftRight'):
           this.shiftRightDown = true;
+          this.shift = true;
           this.removeClass('ShiftLeft', ['click-button-green']);
           break;
 
@@ -221,14 +214,17 @@ export default class Keyboard {
           break;
 
         case ('AltLeft'):
+          event.preventDefault();
           this.addClass(codeButton);
           break;
 
         case ('AltRight'):
+          event.preventDefault();
           this.addClass(codeButton);
           break;
 
         case ('MetaLeft'):
+          this.metaDown = true;
           this.addClass(codeButton);
           break;
 
@@ -240,29 +236,26 @@ export default class Keyboard {
 
         case ('ArrowLeft'):
           this.addClass(codeButton, 'click-button-space');
-          event.preventDefault();
-          this.insertText('◀︎');
           break;
 
         case ('ArrowRight'):
           this.addClass(codeButton, 'click-button-space');
-          event.preventDefault();
-          this.insertText('►');
           break;
 
         case ('ArrowUp'):
           this.addClass(codeButton, 'click-button-space');
-          event.preventDefault();
-          this.insertText('▲');
           break;
 
         case ('ArrowDown'):
           this.addClass(codeButton, 'click-button-space');
-          event.preventDefault();
-          this.insertText('▼');
           break;
 
         default:
+          if (this.metaDown) {
+            event.preventDefault();
+            break;
+          }
+
           if (key) {
             const char = key.innerText;
 
@@ -335,6 +328,11 @@ export default class Keyboard {
           this.shiftDown = false;
           this.shift = false;
           this.renderKeys();
+          this.removeClass(codeButton, ...classArray);
+          break;
+
+        case ('MetaLeft'):
+          this.metaDown = false;
           this.removeClass(codeButton, ...classArray);
           break;
 
@@ -451,9 +449,18 @@ export default class Keyboard {
 
             if (this.shift && !this.shiftDown) {
               this.shift = false;
+
+              if (this.shiftLeftDown) {
+                this.shift = true;
+                this.removeClass('ShiftRight', 'click-button-green');
+              }
+
+              if (this.shiftRightDown) {
+                this.shift = true;
+                this.removeClass('ShiftLeft', 'click-button-green');
+              }
+
               this.renderKeys();
-              if (this.shiftLeftDown) this.removeClass('ShiftRight', 'click-button-green');
-              if (this.shiftRightDown) this.removeClass('ShiftLeft', 'click-button-green');
 
               if (!this.shiftLeftDown && !this.shiftRightDown) {
                 this.removeClass('ShiftRight', 'click-button-green');
