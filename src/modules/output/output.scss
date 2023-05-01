@@ -1,0 +1,17 @@
+.board{
+  box-sizing: border-box;
+  font-family: 'Balsamiq';
+  min-width: 1000px;
+  height: 250px;
+  padding: 25px;
+  transform: scale(.9);
+  border: 3px solid $--clr-neon-light;
+  background-color: $--clr-neon-main;
+  color: $--clr-neon-text;
+  outline: none;
+  resize: none;
+  font-size: 25px;
+  border-radius: 10px;
+  box-shadow: 0 0 25px 1px $--clr-neon-light;
+  text-shadow: 0 0 15px hsla(0, 0%, 100%, 0.3), 0 0 30px $--clr-neon-text;
+}
